@@ -31,7 +31,16 @@ After aggregating all of the article text to one row per day, and performing ana
 
 ![30 day rolling](images/effect_of_news_on_price.png)
 
-From the graph above, we can see that there are a few interesting regions that have  
+From the graph above, we can see that there are a few interesting regions that can be explored. First, the period between January 2020 and March 2020 increase in negative news, which is also reflected by the drop in daily returns. By isolating the articles written over this time period, we can see that [insert conclusion]
+
+![early 2020 analysis](images/early_2020_article_analysis.png)
+
+Wordclouds of the news articles of both positive and negative sentiment articles from the beginning of 2018 show that returns were negatively affected by two major scandals. Apple was accused of throttling phone speeds on older phones, leading to government probes in europe discussing [planned obscelesence](https://en.wikipedia.org/wiki/Planned_obsolescence). Additionally, iPhone users began to report that their phones batteries were exploding, which led Apple to announce [they would replace](https://support.apple.com/iphone/repair/service/battery-power) batteries on phones that may have the defect. During this period, Apple also released the HomePod, to mixed reviews. We can see that in this case, investors acted on the news of recalls and possible government intervention. 
+![early 2020 analysis](images/early_2018_article_analysis.png)
+
+Late 2016 brought news of Apple parking shielding corporate profits in ireland, through as scheme known as the ['Double Irish'](https://en.wikipedia.org/wiki/Double_Irish_arrangement). Despite being [ordered to pay](https://www.dw.com/en/juncker-says-apple-ruling-not-meant-to-attack-the-usa/a-19525846) billions in fines, stock prices were not effected. In fact, it seems that the dominant sentiment was positive during this period, with only a slight negative bump.
+![early 2020 analysis](images/late_2016_article_analysis.png)
+
 
 ## Conclusions
 
@@ -39,7 +48,13 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ## Next Steps
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum at varius vel pharetra vel turpis nunc eget. Quis lectus nulla at volutpat diam ut venenatis tellus. Posuere ac ut consequat semper viverra nam libero justo laoreet. Pulvinar elementum integer enim neque volutpat ac tincidunt vitae. Aliquam etiam erat velit scelerisque in. Porta non pulvinar neque laoreet suspendisse. Ac tincidunt vitae semper quis. In iaculis nunc sed augue lacus viverra. Posuere ac ut consequat semper viverra nam libero justo laoreet.
+Going forward, I plan on expanding the scope of this project to include all of the 30 stocks which comprise the DOW. My hypothesis would be that news relating to each stock varies, making it difficult to accurately predict any one stock consistantly, however; many weak classifiers may produce good prediction overall. Some thoughts on how to improve prediction power include:
+
+1) For this project, i'm focusing on a time window of 24 hours to classify the direction of change. Further analysis into different time windows may show different results. 
+
+2) Adding word embeddings may improve the overall accuracy of predictions. 
+
+3) Developing a data pipline suitable for online learning would allow the classifier to update as news breaks. 
 
 ## For More Information
 
