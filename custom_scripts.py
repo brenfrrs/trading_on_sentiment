@@ -125,4 +125,4 @@ def lemmatize_text(text):
 
     Output: The lemmatized words of the passed string.
     '''
-     return [lemmatizer.lemmatize(word) for word in text]
+    return [lemmatizer.lemmatize(word) for word in text]
