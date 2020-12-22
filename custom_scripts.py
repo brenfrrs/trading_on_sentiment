@@ -7,6 +7,7 @@ from nltk.tokenize import regexp_tokenize
 import nltk
 import time
 from dateutil.relativedelta import relativedelta
+from nltk.corpus import stopwords
 
 def clean_text(text):
     text.replace("\n"," ")
@@ -126,3 +127,53 @@ def lemmatize_text(text):
     Output: The lemmatized words of the passed string.
     '''
     return [lemmatizer.lemmatize(word) for word in text]
+
+
+
+#instantiate stop word list
+stop_words=list(set(stopwords.words("english")))
+
+#add additional stop words discovered through manually browsing the corpus.
+eda_stopwords = [
+    'x', 'u', "'", 'e', 'a', 'i', 'n', 'u', 'd', 'c', 'p', 's', 'i',
+    'o', 'r', 't', 'journalism', 'support', 'u', 'editor', 'fair', 'informed',
+    'cookie', 'miamiaccording', 'article', 'expired', 'no', 'longer', 'want',
+    'search', 'google', 'every', 'term', 'newswire', 'subscribe', 'button', 'close',
+    'accept', 'goal', 'achieve', 'u', 'subscribed', 'many', 'continue', 'offer',
+    'hard', 'provide', 'dear', 'reader', 'standard', 'always', 'strived', 'miamiinterested',
+    'adopting', 'pet', 'gazing', 'lovable', 'pup', 'adoption', 'dog', 'animal', 'shelter',
+    'ziprecruiter', 'miami', 'policy', 'clicking', 'explicit', 'consent',
+    'please', 'see', 'even', 'better', 'relevant', 'goal', 'le', 'u,', 'philip', 'schiller',
+    'believe', 'getty', 'josh', 'edelson', 'topical', 'issue', 'relevance',
+    'seen', 'man', 'forward', 'dunkin', 'late', 'wife', 'bagelsee', 'rental', 'site', 'zumper',
+    'quarantinefind', 'irvine', 'using', 'yelp', 'find', 'devon', 'horse', 'show',
+    'urge', 'turn', 'ad', 'blocker', 'telegraph', 'barbecue', 'stop', 'crunched',
+    'porch', 'ebay', 'amazon', 'curry', 'weeknightsset', 'easy', 'dinner', 'matter', 'partner',
+    'find', 'detailed', 'description', 'apartment', 'got', 'news', 'mission', 'day', 'impersonal',
+    'get', 'tip', 'top', 'mirror', 'newsletter', 'sign', 'thank', 'subscribing',
+    'newsletter', 'invalid', 'full', 'swing', 'keen', 'get', 'hand', 'high', 'street',
+    'john', 'lewis', 'curry', 'ton', 'currently', 'available', 'actual', 'check', 'back', 'also', 'honor',
+    'writer', 'try', 'put', 'apartment', 'rent', 'via', 'go', 'rounded', 'dog', 'shelter', 'pup',
+    'dozen', 'donut', 'south', 'targeted', 'practise', 'floridado', 'love', 'florida', 'doggy',
+    'cancer', 'hide', 'caption', 'cooky', 'browser', 'sauce', 'pandemicthe',
+    'something', 'penguina', 'eagle', 'email', 'notification', 'irvinein', 'hoodline',
+    'recipe', 'perfect', 'meal', 'googlethe', 'v', 'doggy', 'delightful',
+    'place', 'live', 'retire', 'takeout', 'youtubethe', 'barnes', 'museum',
+    'cooking', 'nonstick', 'cookware', 'pretzelslearn', 'homemade', 'soft',
+    'collectionsmany', 'franklin', 'u', 'gotten', 'tour', 'familiesthis',
+    'best', 'spot', 'noticed', 'adblocking', 'help', 'fund', 'award', 'winning',
+    'image', 'curry', 'ton', 'miamimiami', 'new', 'jersey', 'photographer',
+    'authoritative', 'apartment', 'cheapest', 'downtown', 'bedroom', 'adventure',
+    'aquarium', 'artwork', 'pretzel', 'click', 'play', 'tap', 'play',
+    'aught', 'newsletter', 'pear', 'david', 'nield', 'gizmodo', 'pic', 'twitter',
+    'com', 'thimbleweed', 'monument', 'pas', 'afp', 'u', 'prepear'
+]
+
+
+#extend the original stop word list to include eda stopwords.
+stop_words.extend(eda_stopwords)
+
+
+def remove_stopwords(text):
+    '''input a string and output that string with the stop words removed'''
+    return [word for word in text if word not in stop_words]
