@@ -44,9 +44,15 @@ Late 2016 brought news of Apple parking shielding corporate profits in ireland, 
 
 ## Conclusions
 
-Throughout the course of this project my hypothesis was that news articles would be a good indicator of stock direction. It seems logical, that investors may act on both good and bad media coverage. However, this relationship is much more subtle than I expected. In the future, to increase the accuracy of predictions I will incorporate social media and forum data. We have seen that there are controversies and scandals that have and impact on short-term price direction, but at the same time other events have no effect on price, such as the 'Double Irish' scandal and subsequent fines. In that situation, even though Apple was being fined billions, short term price movements were steady. As I expand this project into the other stocks that comprise the DOW, It will be interesting to see how different news effects different companies. Through this analysis I concluded that a Bernoulli Naive Bayes increased F1 scores by 11%. Additionally, Bernoulli Naive Bayes provided a 9% increase from the baseline. Further gains should be expected as more features and data are added.
+Throughout the course of this project my hypothesis was that news articles would be a good indicator of stock direction. It seems logical, that investors may act on both good and bad media coverage. However, this relationship is much more subtle than I expected. In the future, to increase the accuracy of predictions I will incorporate social media and forum data. We have seen that there are controversies and scandals that have and impact on short-term price direction, but at the same time other events have no effect on price, such as the 'Double Irish' scandal and subsequent fines. In that situation, even though Apple was being fined billions, short term price movements were steady. As I expand this project into the other stocks that comprise the DOW, It will be interesting to see how different news effects different companies. Even though Gaussian Naive Bayes had the highest initial Area Under The Curve score, I opted to optimize the Multinomial Naive Bayes model because it's initial F1 was 62%, with 92% recall of the positive class. 
 
 ![model scores](images/model_analysis.png)
+
+This meant that the model was doing a good job a predicted when stock prices would rise, but on the other hand the false positive rate was higher than the true positive rate. I decided to address this by tuning the `class_prior` hyperparameter in order to modify the decision boundry and reduce false positives.
+
+![model scores](images/final_confusion.png)
+
+As a guide for decision making, this model would have value in identifying days when investors may want to sell their Apple shares. However, the number of false positives produced by the model is too high to allow for automated trading. With a 59% final F1 score, an asset management firm would benefit from using this model as a supplement to other predictive instruments, not as a main source of guidance. As more obervations are added to the dataset, I expect performance to improve.
 
 ## Next Steps
 
