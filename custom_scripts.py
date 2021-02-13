@@ -9,9 +9,10 @@ import time
 from dateutil.relativedelta import relativedelta
 from nltk.corpus import stopwords
 
+
 def clean_text(text):
-    text.replace("\n"," ")
-    text =  ' '.join(re.sub("([^0-9A-Za-z])"," ",text).split())
+    text.replace("\n", " ")
+    text = ' '.join(re.sub("([^0-9A-Za-z])", " ", text).split())
     return text.lower()
 
 
@@ -22,6 +23,7 @@ def get_outlet(link):
     res = tldextract.extract(link)
     return res.domain
 
+
 def get_month_day_range(year):
     '''
     When given a year, returns a list of tuples with the start and end dates for each month of the provided year.
@@ -29,15 +31,18 @@ def get_month_day_range(year):
 
     ranges = []
 
-    target_year = [(pd.datetime(year,1,1)), (pd.datetime(year,2,1)), (pd.datetime(year,3,1)),
-           (pd.datetime(year,4,1)), (pd.datetime(year,5,1)), (pd.datetime(year,6,1)),
-           (pd.datetime(year,7,1)), (pd.datetime(year,8,1)), (pd.datetime(year,9,1)),
-           (pd.datetime(year,10,1)), (pd.datetime(year,11,1)), (pd.datetime(year,12,1))]
+    target_year = [(pd.datetime(year, 1, 1)), (pd.datetime(year, 2, 1)), (pd.datetime(year, 3, 1)),
+                   (pd.datetime(year, 4, 1)), (pd.datetime(
+                       year, 5, 1)), (pd.datetime(year, 6, 1)),
+                   (pd.datetime(year, 7, 1)), (pd.datetime(
+                       year, 8, 1)), (pd.datetime(year, 9, 1)),
+                   (pd.datetime(year, 10, 1)), (pd.datetime(year, 11, 1)), (pd.datetime(year, 12, 1))]
 
     for date in target_year:
         last_day = date + relativedelta(day=1, months=+1, days=-1)
         first_day = date + relativedelta(day=1)
-        ranges.append((first_day.strftime('%Y-%m-%d'), last_day.strftime('%Y-%m-%d')))
+        ranges.append((first_day.strftime('%Y-%m-%d'),
+                       last_day.strftime('%Y-%m-%d')))
 
     return ranges
 
@@ -54,20 +59,20 @@ def get_past_prices(range, ticker):
     td = TDClient(apikey="ef26202dacaf412fb157a05403f81ca3")
     times = []
 
-    counter =1
+    counter = 1
 
-    for start,end in range:
-        #delay to prevent API limits.
+    for start, end in range:
+        # delay to prevent API limits.
         time.sleep(20)
         ts = td.time_series(
-        symbol=ticker,
-        interval="1day",
-        start_date=start,
-        end_date=end
+            symbol=ticker,
+            interval="1day",
+            start_date=start,
+            end_date=end
         ).as_pandas()
         times.append(ts)
-        print(str(counter) + ')', str(start) + ' to',end)
-        counter +=1
+        print(str(counter) + ')', str(start) + ' to', end)
+        counter += 1
 
     stock_prices = pd.concat(times)
 
@@ -75,8 +80,8 @@ def get_past_prices(range, ticker):
     return stock_prices
 
 
-
 analyzer = SentimentIntensityAnalyzer()
+
 
 def sentiment_analyzer_scores(article):
     '''
@@ -98,6 +103,7 @@ def sentiment_analyzer_scores(article):
 
     return sent
 
+
 def toke(text):
     '''
     Input: a string value
@@ -108,17 +114,19 @@ def toke(text):
     return tokens
 
 
-
 def unlist(x):
     return ", ".join(x)
 
 
 tokenizer = nltk.tokenize.TweetTokenizer()
 
+
 def tokenize(text):
     return nltk.word_tokenize(text)
 
+
 lemmatizer = nltk.stem.WordNetLemmatizer()
+
 
 def lemmatize_text(text):
     '''
@@ -129,11 +137,10 @@ def lemmatize_text(text):
     return [lemmatizer.lemmatize(word) for word in text]
 
 
+# instantiate stop word list
+stop_words = list(set(stopwords.words("english")))
 
-#instantiate stop word list
-stop_words=list(set(stopwords.words("english")))
-
-#add additional stop words discovered through manually browsing the corpus.
+# add additional stop words discovered through manually browsing the corpus.
 eda_stopwords = [
     'x', 'u', "'", 'e', 'a', 'i', 'n', 'u', 'd', 'c', 'p', 's', 'i',
     'o', 'r', 't', 'journalism', 'support', 'u', 'editor', 'fair', 'informed',
@@ -170,10 +177,20 @@ eda_stopwords = [
 ]
 
 
-#extend the original stop word list to include eda stopwords.
+# extend the original stop word list to include eda stopwords.
 stop_words.extend(eda_stopwords)
 
 
 def remove_stopwords(text):
     '''input a string and output that string with the stop words removed'''
     return [word for word in text if word not in stop_words]
+
+
+# classification target threshold can be changed easily if needed.
+def thresh(change):
+    targ = None
+    if change >= .055:  # only predict if price increase is at or above .055 cents
+        targ = 1
+    else:
+        targ = 0
+    return targ
