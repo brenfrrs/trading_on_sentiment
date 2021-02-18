@@ -8,12 +8,70 @@ import nltk
 import time
 from dateutil.relativedelta import relativedelta
 from nltk.corpus import stopwords
+from collections import Counter
 
 
 def clean_text(text):
     text.replace("\n", " ")
     text = ' '.join(re.sub("([^0-9A-Za-z])", " ", text).split())
     return text.lower()
+
+
+def corpus_dist(bow_list):
+    """
+    Input a list/columns of fulltext articles
+
+    Return: tuple of most_used and least used words in the corpus
+
+    dist = corpus_dist(df.articles.to_list())
+
+    dist[0] <Most used words>
+    dist[1] <Least used words>
+
+    """
+
+    bow_list = " ".join(bow_list)
+
+    tokens = re.findall(r'\b[A-Za-z]{4,25}\b', bow_list.lower())
+    relevant_keywords = dict(Counter(tokens))
+
+    freq_dist = pd.DataFrame(
+        list(relevant_keywords.items()), columns=['word', 'freq'])
+    freq_dist = freq_dist.sort_values(by=['freq'], ascending=False)
+    freq_dist = freq_dist.reset_index(drop=True)
+
+    # cut the top and bottom half of the word freq distribution.
+    midpoint = round(freq_dist.shape[0] * .5)
+
+    most_used = freq_dist[:midpoint].word.to_list()
+    least_used = freq_dist[midpoint:].word.to_list()
+
+    # return the most used words in the whole corpus.
+    return most_used, least_used
+
+
+def filter_articles(article, corp_list=None):
+    """
+    To be used as a pandas.apply() method.
+
+    data['fulltext'].apply(filter_articles,corp_list=corp_dist)
+
+    Returns a float representing the proportion of least used words in the corpus compared to a particular article.
+    """
+    article = article.lower()
+    article_wc = len(article.split(' '))
+    total_words = 0
+    relevant_words = 0
+    t = re.findall(r'\b[A-Za-z]{4,25}\b', article)
+
+    for word in t:
+        if word in corp_list[1][:2000]:
+            relevant_words += 1
+        total_words += 1
+
+    ratio = relevant_words / article_wc
+
+    return round(ratio, 5)
 
 
 def get_outlet(link):
